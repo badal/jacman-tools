@@ -16,7 +16,7 @@ module JacintheManagement
 
       # "About" message
       ABOUT = ['Versions :',
-               "   jacman-qt : #{JacintheManagement::VERSION}",
+               "   jacman-qtbase : #{JacintheManagement::BASE_VERSION}",
                "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
                "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
                "   collective subscriptions manager : #{VERSION}",

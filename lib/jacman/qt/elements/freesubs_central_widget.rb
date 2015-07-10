@@ -17,9 +17,9 @@ module JacintheManagement
 
       # "About" message
       ABOUT = ['Versions :',
-               "   jacman-qt : #{JacintheManagement::VERSION}",
+               "   jacman-qtbase : #{JacintheManagement::BASE_VERSION}",
                "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
-               # "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
+               "   jacman-freesubs : #{JacintheManagement::Freesubs::VERSION}",
                "   free subscriptions manager : #{VERSION}",
                'S.M.F. 2015',
                "\u00A9 Michel Demazure, LICENCE M.I.T."]
