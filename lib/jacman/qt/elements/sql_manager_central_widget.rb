@@ -180,9 +180,9 @@ module JacintheManagement
       # @return [String] text to ask for confirmation
       def confirm_text
         [
-            "Les informations sur le fichier  <b>#{@file.name}.sql</b> ",
-            'ont été modifiées, mais n\'ont pas été enregistrées.',
-            'Voulez-vous vraiment ignorer ces modifications ?'
+          "Les informations sur le fichier  <b>#{@file.name}.sql</b> ",
+          'ont été modifiées, mais n\'ont pas été enregistrées.',
+          'Voulez-vous vraiment ignorer ces modifications ?'
         ].join("\n")
       end
 

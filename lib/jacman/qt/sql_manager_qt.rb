@@ -7,7 +7,6 @@
 # (c) Michel Demazure <michel@demazure.com>
 
 require_relative('version.rb')
-require_relative('base.rb')
 require_relative('elements/sql_manager_central_widget.rb')
 
 JacintheManagement.open_log('sql_manager.log')

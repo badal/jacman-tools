@@ -248,9 +248,9 @@ module JacintheManagement
       # @return [Subscriber | nil] collective subscriber built
       def build_collective
         return nil unless check(@name, 'nom de l\'abonnement') &&
-            check(@provider, 'client') &&
-            check(@billing, 'facture') &&
-            check(@year, 'année')
+                          check(@provider, 'client') &&
+                          check(@billing, 'facture') &&
+                          check(@year, 'année')
         @journal_ids = @selections.select { |_, bool| bool }.map { |key, _| key }.sort
         if @journal_ids.size == 0
           error 'pas de revues'

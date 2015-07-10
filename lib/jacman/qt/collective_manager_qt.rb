@@ -7,7 +7,6 @@
 # (c) Michel Demazure <michel@demazure.com>
 
 require_relative('version.rb')
-require_relative('base.rb')
 require_relative('elements/collective_manager_central_widget.rb')
 
 JacintheManagement.open_log('collective_subscriptions.log')
