@@ -19,7 +19,7 @@ module JacintheManagement
       ABOUT = ['Versions :',
                "   jacman-qt : #{JacintheManagement::VERSION}",
                "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
-              # "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
+               # "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
                "   free subscriptions manager : #{VERSION}",
                'S.M.F. 2015',
                "\u00A9 Michel Demazure, LICENCE M.I.T."]
@@ -46,6 +46,7 @@ module JacintheManagement
         [subtitle] + ABOUT
       end
 
+      # build the layout
       def build_layout
         @extender = Freesubs::Extender.new(Freesubs::YEAR)
         @check_buttons = []
@@ -56,6 +57,13 @@ module JacintheManagement
         @layout.add_widget(@number)
         @number.text = caption_text(@extensible_size)
 
+        add_extender_area
+        add_command_area
+        add_report_area
+        check_all_buttons
+      end
+
+      def add_extender_area
         @extender.all_acronyms.zip(@extender.names).each_with_index do |(acro, name), idx|
           Qt::HBoxLayout.new do |line|
             @layout.add_layout(line)
@@ -72,6 +80,9 @@ module JacintheManagement
             line.addStretch
           end
         end
+      end
+
+      def add_command_area
         Qt::HBoxLayout.new do |box|
           @layout.add_layout(box)
           @sel = Qt::Label.new(extension_text(@extensible_size))
@@ -80,6 +91,9 @@ module JacintheManagement
           box.add_widget(button)
           connect(button, SIGNAL_CLICKED) { confirm }
         end
+      end
+
+      def add_report_area
         Qt::HBoxLayout.new do |box|
           @layout.add_layout(box)
           box.add_widget(Qt::Label.new("<b>Mode #{Freesubs::EFFECTIVE ? 'réel' : 'simulé'}</b>"))
@@ -87,7 +101,6 @@ module JacintheManagement
           box.add_widget(@report)
           box.addStretch
         end
-        check_all_buttons
       end
 
       # WARNING: overrides the common one, useless in this case
