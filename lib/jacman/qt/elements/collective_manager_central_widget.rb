@@ -16,7 +16,7 @@ module JacintheManagement
 
       # "About" message
       ABOUT = ['Versions :',
-               "   jacman-qtbase : #{JacintheManagement::BASE_VERSION}",
+               "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
                "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
                "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
                "   collective subscriptions manager : #{VERSION}",
@@ -161,10 +161,10 @@ module JacintheManagement
       def update_values
       end
 
-      # FIXME: add help
-      #  slot help command
+      # Slot: open the help file
       def help
-        puts 'add help'
+        url = Qt::Url.new("file:///#{coll::HELP_FILE}")
+        Qt::DesktopServices.openUrl(url)
       end
 
       ## Controller methods

@@ -16,7 +16,7 @@ module JacintheManagement
 
       # "About" message
       ABOUT = ['Versions :',
-               "   jacman-qtbase : #{JacintheManagement::BASE_VERSION}",
+               "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
                "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
                "   sql_manager : #{VERSION}",
                'S.M.F. 2014-2015',

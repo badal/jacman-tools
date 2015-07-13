@@ -7,7 +7,7 @@
 # (c) Michel Demazure & Kenji Lefevre
 
 module JacintheManagement
-  TOOLS_VERSION = '2.0.1'
+  TOOLS_VERSION = '2.0.2'
   COPYRIGHT = "\u00A9 Michel Demazure"
 end
 
