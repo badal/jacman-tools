@@ -5,8 +5,8 @@
 # Created: 13/7/15
 #
 # (c) Michel Demazure <michel@demazure.com>
-require 'jacman/utils'
-require 'jacman/qt/base'
+
+require_relative 'version.rb'
 require_relative 'elements/tools_central_widget'
 
 JacintheManagement.open_log('tools.log')

@@ -7,8 +7,10 @@
 # (c) Michel Demazure & Kenji Lefevre
 
 module JacintheManagement
-  TOOLS_VERSION = '2.2.0'
-  COPYRIGHT = "\u00A9 Michel Demazure"
+  module GuiQt
+    TOOLS_VERSION = '2.3.0'
+    COPYRIGHT = "\u00A9 Michel Demazure"
+  end
 end
 
-puts JacintheManagement::TOOLS_VERSION if __FILE__ == $PROGRAM_NAME
+puts JacintheManagement::GuiQt::TOOLS_VERSION if __FILE__ == $PROGRAM_NAME

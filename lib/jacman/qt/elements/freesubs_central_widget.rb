@@ -68,6 +68,7 @@ module JacintheManagement
         add_command_area
         add_report_area
         add_config_area
+        @layout.add_stretch
         check_all_buttons
       end
 

@@ -15,6 +15,7 @@ module JacintheManagement
       ABOUT = ['Versions :',
                "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
                "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
+               "   jacman-tools : #{JacintheManagement::GuiQt::TOOLS_VERSION}",
                'S.M.F. 2015',
                "\u00A9 Michel Demazure, LICENCE M.I.T."]
 
@@ -52,7 +53,7 @@ module JacintheManagement
 
       def add_call(text, command)
         button = Qt::PushButton.new(text)
-        button.minimum_height = 60
+        button.minimum_height = 50
         add_widget(button)
         connect(button, SIGNAL_CLICKED) { command.call }
       end
@@ -75,7 +76,7 @@ module JacintheManagement
       end
 
       def freesubs(year)
-       # require 'jacman/freesubs'
+        require 'jacman/freesubs'
         require_relative 'freesubs_central_widget'
         parent.central_widget = FreesubsCentralWidget.new(year)
       end

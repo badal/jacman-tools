@@ -27,6 +27,15 @@ module JacintheManagement
       # format for *caption_text*
       FMT = '%3d '
 
+      SIGNAL_CLICKED = SIGNAL(:clicked)
+
+      # @param [Bool] mode whether mails have to be sent
+      def initialize(mode = false)
+        @mode = mode
+        super()
+      end
+
+
       # @return [[Integer] * 4] geometry of mother window
       def geometry
         if Utils.on_mac?
@@ -51,15 +60,27 @@ module JacintheManagement
         build_first_line
         build_selection_area
         build_notify_command_area
+        add_config_area
         build_report_area
         update_selection
         redraw_selection_area
-        initial_report
       end
 
-      # print the report first line
-      def initial_report
-        report(Notifications::FAKE ? 'Mode simulé' : 'Mode réel')
+      def add_config_area
+        Qt::HBoxLayout.new do |box|
+          add_layout(box)
+          msg = @mode ? 'Mode réel' : 'Mode simulé'
+          box.add_widget(Qt::Label.new("<b>#{msg}</b>"))
+          button = Qt::PushButton.new('Changer le mode')
+          box.add_widget(button)
+          connect(button, SIGNAL_CLICKED) { switch_mode }
+          box.addStretch
+        end
+      end
+
+      def switch_mode
+        new_central_widget = NotifierCentralWidget.new(!@mode)
+        parent.central_widget = new_central_widget
       end
 
       # show th report
@@ -124,7 +145,7 @@ module JacintheManagement
       # do all notifications
       def do_notify
         JacintheManagement.log("Notifying #{@selected_keys.join(' ')}")
-        Notifications.notify_all(@selected_keys)
+        Notifications.notify_all(@selected_keys, @mode)
       end
 
       # @param [array] key the category key to be shown
