@@ -25,6 +25,7 @@ module JacintheManagement
 
       SIGNAL_EDITING_FINISHED = SIGNAL('editingFinished()')
       SIGNAL_CLICKED = SIGNAL(:clicked)
+      HELP_FILE = File.join(File.dirname(__FILE__), '../help_files/collective_help.pdf')
 
       # @return [[Integer] * 4] geometry of mother window
       def geometry
@@ -75,9 +76,9 @@ module JacintheManagement
 
       # build the corresponding part
       def build_name_line
-        @layout.add_widget(Qt::Label.new("<b>L'abonnement</b>"))
+        add_widget(Qt::Label.new("<b>L'abonnement</b>"))
         box = Qt::HBoxLayout.new
-        @layout.add_layout(box)
+        add_layout(box)
         box.add_widget(Qt::Label.new('Nom :'))
         @name_field = Qt::LineEdit.new
         box.add_widget(@name_field)
@@ -90,9 +91,9 @@ module JacintheManagement
 
       # build the corresponding part
       def build_client_line
-        @layout.add_widget(Qt::Label.new('<b>Le financeur</b>'))
+        add_widget(Qt::Label.new('<b>Le financeur</b>'))
         box = Qt::HBoxLayout.new
-        @layout.add_layout(box)
+        add_layout(box)
         box.add_widget(Qt::Label.new('Client :'))
         @client_field = Qt::LineEdit.new
         box.add_widget(@client_field)
@@ -109,11 +110,11 @@ module JacintheManagement
       def build_journal_choices
         @selections = {}
         @check = []
-        @layout.add_widget(Qt::Label.new('<b> Les revues</b>'))
+        add_widget(Qt::Label.new('<b> Les revues</b>'))
         @journals.each_with_index do |(_, journal), idx|
           next unless journal
           box = Qt::HBoxLayout.new
-          @layout.add_layout(box)
+          add_layout(box)
           @check[idx] = Qt::CheckBox.new
           connect(@check[idx], SIGNAL_CLICKED) { @selections[idx] = @check[idx].checked? }
           box.add_widget(@check[idx])
@@ -125,15 +126,15 @@ module JacintheManagement
       # build the corresponding part
       def build_report_area
         @report = Qt::TextEdit.new('')
-        @layout.add_widget(@report)
+        add_widget(@report)
         @report.read_only = true
       end
 
       # build the corresponding part
       def build_command_area
-        @layout.add_widget(Qt::Label.new('<b>Actions</b>'))
+        add_widget(Qt::Label.new('<b>Actions</b>'))
         box = Qt::HBoxLayout.new
-        @layout.add_layout(box)
+        add_layout(box)
         @create_button = Qt::PushButton.new('Créer  un abo. coll.')
         connect(@create_button, SIGNAL_CLICKED) { create_collective }
         box.add_widget(@create_button)
@@ -163,7 +164,7 @@ module JacintheManagement
 
       # Slot: open the help file
       def help
-        url = Qt::Url.new("file:///#{coll::HELP_FILE}")
+        url = Qt::Url.new("file:///#{HELP_FILE}")
         Qt::DesktopServices.openUrl(url)
       end
 

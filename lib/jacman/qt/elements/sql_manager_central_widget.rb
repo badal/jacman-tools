@@ -62,7 +62,7 @@ module JacintheManagement
       # build the type line
       def build_type_line
         box = Qt::HBoxLayout.new
-        @layout.add_layout(box)
+        add_layout(box)
         @type = Qt::ComboBox.new
         @type.add_items(SQLFiles::TYPES)
         box.add_widget(Qt::Label.new('Type :'))
@@ -75,7 +75,7 @@ module JacintheManagement
         list = [FIRST_LINE] + SQLFiles::Source.all
         @selection = Qt::ComboBox.new
         @selection.add_items(list)
-        @layout.add_widget(@selection)
+        add_widget(@selection)
         connect(@selection, SIGNAL('activated(const QString&)')) { |name| file_selected(name) }
       end
 
@@ -84,7 +84,7 @@ module JacintheManagement
         SQLFiles::KEYS.each_pair do |key, value|
           @info_values[key] = Qt::LineEdit.new(NEANT)
           box = Qt::HBoxLayout.new
-          @layout.add_layout(box)
+          add_layout(box)
           label = Qt::Label.new(value.to_s)
           box.add_widget(label)
           box.add_widget(@info_values[key])
@@ -95,7 +95,7 @@ module JacintheManagement
       # build the zone to show the content of the file
       def build_content_zone
         @content = Qt::TextEdit.new
-        @layout.add_widget(@content)
+        add_widget(@content)
         @content.read_only = true
       end
 
@@ -107,7 +107,7 @@ module JacintheManagement
         @save_button = Qt::PushButton.new('Enregistrer les modifications')
         box.add_widget(@save_button)
         connect(@save_button, SIGNAL(:clicked)) { save_infos }
-        @layout.add_layout(box)
+        add_layout(box)
       end
 
       # build the execution line
@@ -121,7 +121,7 @@ module JacintheManagement
         box.add_widget(@exec_button)
         @exec_button.enabled = false
         connect(@exec_button, SIGNAL(:clicked)) { execute }
-        @layout.add_layout(box)
+        add_layout(box)
       end
 
       # set all starting values

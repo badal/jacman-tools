@@ -71,7 +71,7 @@ module JacintheManagement
       # build the report area
       def build_report_area
         Qt::HBoxLayout.new do |box|
-          @layout.add_layout(box)
+          add_layout(box)
           @report = Qt::TextEdit.new
           box.add_widget(@report)
         end
@@ -80,7 +80,7 @@ module JacintheManagement
       # build the notify button
       def build_notify_command_area
         Qt::HBoxLayout.new do |box|
-          @layout.add_layout(box)
+          add_layout(box)
           @sel = Qt::Label.new
           box.add_widget(@sel)
           @notify_button = Qt::PushButton.new('Notifier ?')
@@ -92,7 +92,7 @@ module JacintheManagement
       # build the first line
       def build_first_line
         @number = Qt::Label.new
-        @layout.add_widget(@number)
+        add_widget(@number)
       end
 
       # build the selection area
@@ -103,7 +103,7 @@ module JacintheManagement
         @numbers = []
         @pending_notifications.each_pair.with_index do |(key, _), idx|
           Qt::HBoxLayout.new do |line|
-            @layout.add_layout(line)
+            add_layout(line)
             @numbers[idx] = Qt::Label.new
             line.add_widget(@numbers[idx])
             Qt::CheckBox.new do |button|

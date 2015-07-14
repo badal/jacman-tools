@@ -26,6 +26,7 @@ module JacintheManagement
 
       SIGNAL_EDITING_FINISHED = SIGNAL('editingFinished()')
       SIGNAL_CLICKED = SIGNAL(:clicked)
+      HELP_FILE = File.join(File.dirname(__FILE__), '../help_files/freesubs_help.pdf')
 
       # @return [[Integer] * 4] geometry of mother window
       def geometry
@@ -54,7 +55,7 @@ module JacintheManagement
         fetch_updated_sizes
 
         @number = Qt::Label.new
-        @layout.add_widget(@number)
+        add_widget(@number)
         @number.text = caption_text(@extensible_size)
 
         add_extender_area
@@ -66,7 +67,7 @@ module JacintheManagement
       def add_extender_area
         @extender.all_acronyms.zip(@extender.names).each_with_index do |(acro, name), idx|
           Qt::HBoxLayout.new do |line|
-            @layout.add_layout(line)
+            add_layout(line)
             number = Qt::Label.new(format(FMT, @extensible_sizes[idx]))
             @ins[idx] = number
             line.add_widget(number)
@@ -84,7 +85,7 @@ module JacintheManagement
 
       def add_command_area
         Qt::HBoxLayout.new do |box|
-          @layout.add_layout(box)
+          add_layout(box)
           @sel = Qt::Label.new(extension_text(@extensible_size))
           box.add_widget(@sel)
           button = Qt::PushButton.new("Les étendre  à l'année #{Freesubs::YEAR + 1}")
@@ -95,7 +96,7 @@ module JacintheManagement
 
       def add_report_area
         Qt::HBoxLayout.new do |box|
-          @layout.add_layout(box)
+          add_layout(box)
           box.add_widget(Qt::Label.new("<b>Mode #{Freesubs::EFFECTIVE ? 'réel' : 'simulé'}</b>"))
           @report = Qt::Label.new
           box.add_widget(@report)
@@ -109,13 +110,8 @@ module JacintheManagement
 
       # Slot: open the help file
       def help
-        url = Qt::Url.new("file:///#{Freesubs::HELP_FILE}")
-        Qt::DesktopServices.openUrl(url)
-      end
-
-      # Slot: open the config file
-      def config
-        url = Qt::Url.new("file:///#{Freesubs::CONFIG_FILE}")
+        url = Qt::Url.new("file:///#{HELP_FILE}")
+        p url
         Qt::DesktopServices.openUrl(url)
       end
 
