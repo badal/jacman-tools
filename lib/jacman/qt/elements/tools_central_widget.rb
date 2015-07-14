@@ -58,8 +58,10 @@ module JacintheManagement
       end
 
       def build_layout
+        year = Time.now.year
         add_call('Notification des abonnements électroniques', ->() { notifier })
-        add_call('Gestion des abonnements gratuits', ->() { freesubs })
+        add_call("Extension des abonnements gratuits de l'année #{year - 1}", ->() { freesubs(year - 1) })
+        add_call("Extension des abonnements gratuits de l'année #{year}", ->() { freesubs(year) })
         add_call('Création d\'un abonnements collectif', ->() { collective_exploitation })
         add_call('Exploitation des abonnements collectifs', ->() { collective_exploitation })
         add_call('Fichiers de requête', ->() { sql_files })
@@ -72,10 +74,10 @@ module JacintheManagement
         parent.central_widget = NotifierCentralWidget.new
       end
 
-      def freesubs
-        require 'jacman/freesubs'
+      def freesubs(year)
+       # require 'jacman/freesubs'
         require_relative 'freesubs_central_widget'
-        parent.central_widget = FreesubsCentralWidget.new
+        parent.central_widget = FreesubsCentralWidget.new(year)
       end
 
       def collective_manager

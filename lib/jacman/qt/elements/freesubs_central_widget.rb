@@ -28,6 +28,12 @@ module JacintheManagement
       SIGNAL_CLICKED = SIGNAL(:clicked)
       HELP_FILE = File.join(File.dirname(__FILE__), '../help_files/freesubs_help.pdf')
 
+      def initialize(year = Time.now.year, mode = false)
+        @year = year.to_i
+        @mode = mode
+        super()
+      end
+
       # @return [[Integer] * 4] geometry of mother window
       def geometry
         if Utils.on_mac?
@@ -49,7 +55,7 @@ module JacintheManagement
 
       # build the layout
       def build_layout
-        @extender = Freesubs::Extender.new(Freesubs::YEAR)
+        @extender = Freesubs::Extender.new(@year, @mode)
         @check_buttons = []
         @ins = []
         fetch_updated_sizes
@@ -61,6 +67,7 @@ module JacintheManagement
         add_extender_area
         add_command_area
         add_report_area
+        add_config_area
         check_all_buttons
       end
 
@@ -88,7 +95,7 @@ module JacintheManagement
           add_layout(box)
           @sel = Qt::Label.new(extension_text(@extensible_size))
           box.add_widget(@sel)
-          button = Qt::PushButton.new("Les étendre  à l'année #{Freesubs::YEAR + 1}")
+          button = Qt::PushButton.new("Les étendre  à l'année #{@year + 1}")
           box.add_widget(button)
           connect(button, SIGNAL_CLICKED) { confirm }
         end
@@ -97,11 +104,26 @@ module JacintheManagement
       def add_report_area
         Qt::HBoxLayout.new do |box|
           add_layout(box)
-          box.add_widget(Qt::Label.new("<b>Mode #{Freesubs::EFFECTIVE ? 'réel' : 'simulé'}</b>"))
+          box.add_widget(Qt::Label.new("<b>Mode #{@mode ? 'réel' : 'simulé'}</b>"))
           @report = Qt::Label.new
           box.add_widget(@report)
           box.addStretch
         end
+      end
+
+      def add_config_area
+        Qt::HBoxLayout.new do |box|
+          add_layout(box)
+          button = Qt::PushButton.new('Changer le mode')
+          box.add_widget(button)
+          connect(button, SIGNAL_CLICKED) { switch_mode }
+          box.addStretch
+        end
+      end
+
+      def switch_mode
+        new_central_widget = FreesubsCentralWidget.new(@year, !@mode)
+        parent.central_widget = new_central_widget
       end
 
       # WARNING: overrides the common one, useless in this case
@@ -138,7 +160,7 @@ module JacintheManagement
       # @return [String] caption to be shown
       def caption_text(extensible_size)
         number = format(FMT, extensible_size)
-        "<b>  Année de référence #{Freesubs::YEAR} : il reste #{number} abonnements à étendre à #{Freesubs::YEAR + 1}</b>"
+        "<b>  Année de référence #{@year} : il reste #{number} abonnements à étendre à #{@year+1}</b>"
       end
 
       # @return [Array<String>] list of acronyms of selected kinds
