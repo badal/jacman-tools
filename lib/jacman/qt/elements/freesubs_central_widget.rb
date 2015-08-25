@@ -14,15 +14,13 @@ module JacintheManagement
       # version of the free_subs manager
       slots :update_window
       VERSION = '0.1.0'
-
-      # "About" message
-      ABOUT = ['Versions :',
-               "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
-               "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
-               "   jacman-freesubs : #{JacintheManagement::Freesubs::VERSION}",
-               "   free subscriptions manager : #{VERSION}",
-               'S.M.F. 2015',
-               "\u00A9 Michel Demazure, LICENCE M.I.T."]
+      # "About" specific message
+      SPECIFIC = [
+          "   jacman-freesubs : #{JacintheManagement::Freesubs::VERSION}",
+          "   free subscriptions manager : #{VERSION}"
+      ]
+      # "About message"
+      ABOUT = GuiQt.tools_versions(SPECIFIC)
 
       SIGNAL_EDITING_FINISHED = SIGNAL('editingFinished()')
       SIGNAL_CLICKED = SIGNAL(:clicked)
@@ -161,7 +159,7 @@ module JacintheManagement
       # @return [String] caption to be shown
       def caption_text(extensible_size)
         number = format(FMT, extensible_size)
-        "<b>  Année de référence #{@year} : il reste #{number} abonnements à étendre à #{@year+1}</b>"
+        "<b>  Année de référence #{@year} : il reste #{number} abonnements à étendre à #{@year + 1}</b>"
       end
 
       # @return [Array<String>] list of acronyms of selected kinds

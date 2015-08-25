@@ -13,14 +13,12 @@ module JacintheManagement
     class SqlManagerCentralWidget < CentralWidget
       # version of the SQLl_manager
       VERSION = '0.1.4'
-
-      # "About" message
-      ABOUT = ['Versions :',
-               "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
-               "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
-               "   sql_manager : #{VERSION}",
-               'S.M.F. 2014-2015',
-               "\u00A9 Michel Demazure, LICENCE M.I.T."]
+      # "About" specific message
+      SPECIFIC = [
+          "   sql_manager : #{VERSION}"
+      ]
+      # "About message"
+      ABOUT = GuiQt.tools_versions(SPECIFIC)
 
       FIRST_LINE = 'Choisir un fichier'
       NEANT = '---'

@@ -11,13 +11,11 @@ module JacintheManagement
   module GuiQt
     # Central widget for tools choice
     class ToolsCentralWidget < CentralWidget
-      # "About" message
-      ABOUT = ['Versions :',
-               "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
-               "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
-               "   jacman-tools : #{JacintheManagement::GuiQt::TOOLS_VERSION}",
-               'S.M.F. 2015',
-               "\u00A9 Michel Demazure, LICENCE M.I.T."]
+      # "About" specific message
+      SPECIFIC = ["   jacman-tools : #{JacintheManagement::GuiQt::TOOLS_VERSION}"]
+
+      # "About message"
+      ABOUT = GuiQt.tools_versions(SPECIFIC)
 
       SIGNAL_EDITING_FINISHED = SIGNAL('editingFinished()')
       SIGNAL_CLICKED = SIGNAL(:clicked)
@@ -63,7 +61,7 @@ module JacintheManagement
         add_call('Notification des abonnements électroniques', ->() { notifier })
         add_call("Extension des abonnements gratuits de l'année #{year - 1}", ->() { freesubs(year - 1) })
         add_call("Extension des abonnements gratuits de l'année #{year}", ->() { freesubs(year) })
-        add_call('Création d\'un abonnements collectif', ->() { collective_exploitation })
+        add_call('Création d\'un abonnement collectif', ->() { collective_manager })
         add_call('Exploitation des abonnements collectifs', ->() { collective_exploitation })
         add_call('Fichiers de requête', ->() { sql_files })
         @layout.add_stretch

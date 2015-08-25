@@ -13,15 +13,13 @@ module JacintheManagement
     class CollectiveManagerCentralWidget < CentralWidget
       # version of the collective_manager
       VERSION = '0.3.2'
-
-      # "About" message
-      ABOUT = ['Versions :',
-               "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
-               "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
-               "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
-               "   collective subscriptions manager : #{VERSION}",
-               'S.M.F. 2015',
-               "\u00A9 Michel Demazure, LICENCE M.I.T."]
+      # "About" specific message
+      SPECIFIC = [
+          "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
+          "   collective subscription manager : #{VERSION}"
+      ]
+      # "About message"
+      ABOUT = GuiQt.tools_versions(SPECIFIC)
 
       SIGNAL_EDITING_FINISHED = SIGNAL('editingFinished()')
       SIGNAL_CLICKED = SIGNAL(:clicked)

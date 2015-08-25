@@ -14,15 +14,13 @@ module JacintheManagement
     class NotifierCentralWidget < CentralWidget
       # version of the notifier
       VERSION = '0.3.0'
-
-      # "About" message
-      ABOUT = ['Versions :',
-               "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
-               "   jacman-utils : #{JacintheManagement::Utils::VERSION}",
-               "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
-               "   notifier: #{VERSION}",
-               'S.M.F. 2014',
-               "\u00A9 Michel Demazure, LICENCE M.I.T."]
+      # "About" specific message
+      SPECIFIC = [
+          "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
+          "   notifier: #{VERSION}"
+      ]
+      # "About message"
+      ABOUT = GuiQt.tools_versions(SPECIFIC)
 
       # format for *caption_text*
       FMT = '%3d '
@@ -34,7 +32,6 @@ module JacintheManagement
         @mode = mode
         super()
       end
-
 
       # @return [[Integer] * 4] geometry of mother window
       def geometry
