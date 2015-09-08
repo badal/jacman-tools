@@ -72,12 +72,21 @@ module JacintheManagement
           box.add_widget(button)
           connect(button, SIGNAL_CLICKED) { switch_mode }
           box.addStretch
+          @show_button = Qt::PushButton.new('Voir le rapport')
+          box.add_widget(@show_button)
+          @show_button.enabled = false
+          connect(@show_button, SIGNAL_CLICKED) {show_report}
         end
       end
 
       def switch_mode
         new_central_widget = NotifierCentralWidget.new(!@mode)
         parent.central_widget = new_central_widget
+      end
+
+      def show_report
+        puts "show"
+        Notifications::Registry.show_missed_notifications
       end
 
       # show th report
@@ -103,7 +112,7 @@ module JacintheManagement
           box.add_widget(@sel)
           @notify_button = Qt::PushButton.new('Notifier ?')
           box.add_widget(@notify_button)
-          connect(@notify_button, SIGNAL(:clicked)) { confirm }
+          connect(@notify_button, SIGNAL_CLICKED) { confirm }
         end
       end
 
@@ -161,6 +170,7 @@ module JacintheManagement
         update_classification
         redraw_selection_area
         update_selection
+        @show_button.enabled = true
       end
 
       # ask the SQL base
