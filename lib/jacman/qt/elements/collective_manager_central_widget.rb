@@ -15,8 +15,8 @@ module JacintheManagement
       VERSION = '0.3.2'
       # "About" specific message
       SPECIFIC = [
-          "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
-          "   collective subscription manager : #{VERSION}"
+        "   jacman_coll : #{JacintheManagement::Coll::VERSION}",
+        "   collective subscription manager : #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)

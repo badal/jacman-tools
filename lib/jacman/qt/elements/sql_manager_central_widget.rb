@@ -15,7 +15,7 @@ module JacintheManagement
       VERSION = '0.1.4'
       # "About" specific message
       SPECIFIC = [
-          "   sql_manager : #{VERSION}"
+        "   sql_manager : #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)

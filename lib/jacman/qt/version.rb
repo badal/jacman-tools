@@ -16,10 +16,9 @@ module JacintheManagement
        "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",
        "   jacman-utils : #{JacintheManagement::Utils::VERSION}"
       ] + specific +
-          ['S.M.F. 2014-2015',
-           "\u00A9 Michel Demazure, LICENCE M.I.T."]
+        ['S.M.F. 2014-2015',
+         "\u00A9 Michel Demazure, LICENCE M.I.T."]
     end
-
   end
 end
 

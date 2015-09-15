@@ -16,8 +16,8 @@ module JacintheManagement
       VERSION = '0.3.0'
       # "About" specific message
       SPECIFIC = [
-          "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
-          "   notifier: #{VERSION}"
+        "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
+        "   notifier: #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)
@@ -75,7 +75,7 @@ module JacintheManagement
           @show_button = Qt::PushButton.new('Voir le rapport')
           box.add_widget(@show_button)
           @show_button.enabled = false
-          connect(@show_button, SIGNAL_CLICKED) {show_report}
+          connect(@show_button, SIGNAL_CLICKED) { show_report }
         end
       end
 
@@ -85,7 +85,7 @@ module JacintheManagement
       end
 
       def show_report
-        puts "show"
+        puts 'show'
         Notifications::Registry.show_missed_notifications
       end
 
