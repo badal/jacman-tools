@@ -6,18 +6,20 @@
 # Modified: 12/14 for monitor
 #
 # (c) Michel Demazure <michel@demazure.com>
+require_relative('config_button.rb')
 
 # script methods for Jacinthe Management
 module JacintheManagement
   module GuiQt
     # Central widget for manager
     class NotifierCentralWidget < CentralWidget
+      include ConfigButton
       # version of the notifier
       VERSION = '0.3.0'
       # "About" specific message
       SPECIFIC = [
-        "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
-        "   notifier: #{VERSION}"
+          "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
+          "   notifier: #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)
@@ -58,30 +60,29 @@ module JacintheManagement
         build_selection_area
         build_notify_command_area
         add_config_area
+        add_show_report_button
         build_report_area
         update_selection
         redraw_selection_area
       end
 
       def add_config_area
+        button = add_config_button
+        connect(button, SIGNAL_CLICKED) do
+          new_central_widget = NotifierCentralWidget.new(!@mode)
+          parent.central_widget = new_central_widget
+        end
+      end
+
+      def add_show_report_button
         Qt::HBoxLayout.new do |box|
           add_layout(box)
-          msg = @mode ? 'Mode réel' : 'Mode simulé'
-          box.add_widget(Qt::Label.new("<b>#{msg}</b>"))
-          button = Qt::PushButton.new('Changer le mode')
-          box.add_widget(button)
-          connect(button, SIGNAL_CLICKED) { switch_mode }
-          box.addStretch
           @show_button = Qt::PushButton.new('Voir le rapport')
           box.add_widget(@show_button)
           @show_button.enabled = false
           connect(@show_button, SIGNAL_CLICKED) { show_report }
+          box.add_stretch
         end
-      end
-
-      def switch_mode
-        new_central_widget = NotifierCentralWidget.new(!@mode)
-        parent.central_widget = new_central_widget
       end
 
       def show_report
@@ -101,6 +102,7 @@ module JacintheManagement
           add_layout(box)
           @report = Qt::TextEdit.new
           box.add_widget(@report)
+          @report.append("<b>Mode #{@mode ? 'réel' : 'simulé'}</b>")
         end
       end
 

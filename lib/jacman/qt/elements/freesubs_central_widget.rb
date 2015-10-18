@@ -6,11 +6,14 @@
 #
 # (c) Michel Demazure <michel@demazure.com>
 
+require_relative('config_button.rb')
+
 # script methods for Jacinthe Management
 module JacintheManagement
   module GuiQt
     # Central widget for collective subscriptions management
     class FreesubsCentralWidget < CentralWidget
+      include ConfigButton
       # version of the free_subs manager
       slots :update_window
       VERSION = '0.1.0'
@@ -111,18 +114,11 @@ module JacintheManagement
       end
 
       def add_config_area
-        Qt::HBoxLayout.new do |box|
-          add_layout(box)
-          button = Qt::PushButton.new('Changer le mode')
-          box.add_widget(button)
-          connect(button, SIGNAL_CLICKED) { switch_mode }
-          box.addStretch
-        end
-      end
-
-      def switch_mode
-        new_central_widget = FreesubsCentralWidget.new(@year, !@mode)
-        parent.central_widget = new_central_widget
+       button = add_config_button
+       connect(button, SIGNAL_CLICKED) do
+         new_central_widget = FreesubsCentralWidget.new(@year, !@mode)
+         parent.central_widget = new_central_widget
+       end
       end
 
       # WARNING: overrides the common one, useless in this case
