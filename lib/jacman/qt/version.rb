@@ -8,7 +8,7 @@
 
 module JacintheManagement
   module GuiQt
-    TOOLS_VERSION = '2.5.1'
+    TOOLS_VERSION = '2.5.2'
     COPYRIGHT = "\u00A9 Michel Demazure"
 
     def self.tools_versions(specific)

@@ -8,6 +8,8 @@
 module JacintheManagement
   module GuiQt
     module ConfigButton
+      # add a button in an added horizontal layout box
+      # @return [Qt::PushButton] added button
       def add_config_button
         box = Qt::HBoxLayout.new
         add_layout(box)

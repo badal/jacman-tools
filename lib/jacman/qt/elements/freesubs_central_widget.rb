@@ -64,15 +64,17 @@ module JacintheManagement
         @number = Qt::Label.new
         add_widget(@number)
         @number.text = caption_text(@extensible_size)
-
+        add_config_area
         add_extender_area
         add_command_area
         add_report_area
-        add_config_area
+
         @layout.add_stretch
         check_all_buttons
       end
 
+      # add area
+      # FLOG: 29.5
       def add_extender_area
         @extender.all_acronyms.zip(@extender.names).each_with_index do |(acro, name), idx|
           Qt::HBoxLayout.new do |line|
@@ -92,6 +94,7 @@ module JacintheManagement
         end
       end
 
+      # add area
       def add_command_area
         Qt::HBoxLayout.new do |box|
           add_layout(box)
@@ -103,6 +106,7 @@ module JacintheManagement
         end
       end
 
+      # add area
       def add_report_area
         Qt::HBoxLayout.new do |box|
           add_layout(box)
@@ -113,6 +117,7 @@ module JacintheManagement
         end
       end
 
+      # add area
       def add_config_area
        button = add_config_button
        connect(button, SIGNAL_CLICKED) do

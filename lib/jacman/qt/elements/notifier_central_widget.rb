@@ -57,15 +57,16 @@ module JacintheManagement
       # build the layout
       def build_layout
         build_first_line
+        add_config_area
         build_selection_area
         build_notify_command_area
-        add_config_area
         add_show_report_button
         build_report_area
         update_selection
         redraw_selection_area
       end
 
+      # add area
       def add_config_area
         button = add_config_button
         connect(button, SIGNAL_CLICKED) do
@@ -74,6 +75,7 @@ module JacintheManagement
         end
       end
 
+      # add area with report button
       def add_show_report_button
         Qt::HBoxLayout.new do |box|
           add_layout(box)
@@ -85,9 +87,9 @@ module JacintheManagement
         end
       end
 
+      # slot : show missed notifiaction report
       def show_report
-        puts 'show'
-        Notifications::Registry.show_missed_notifications
+         Notifications::Registry.show_missed_notifications
       end
 
       # show th report
@@ -125,9 +127,9 @@ module JacintheManagement
       end
 
       # build the selection area
-      # FLOG: 25.3
+      # FLOG: 27.2
       def build_selection_area
-        @pending_notifications = Notifications::Base.classified_notifications
+        @pending_notifications = Notifications::Base.filtered_classified_notifications
         @check_buttons = []
         @numbers = []
         @pending_notifications.each_pair.with_index do |(key, _), idx|

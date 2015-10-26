@@ -49,6 +49,9 @@ module JacintheManagement
         # Qt::DesktopServices.openUrl(url)
       end
 
+      # add button and connect command
+      # @param [String] text text for button
+      # @param [Proc] command command for button
       def add_call(text, command)
         button = Qt::PushButton.new(text)
         button.minimum_height = 50
@@ -56,6 +59,8 @@ module JacintheManagement
         connect(button, SIGNAL_CLICKED) { command.call }
       end
 
+      # build the layout
+      # FLOG: 28.6
       def build_layout
         year = Time.now.year
         add_call('Notification des abonnements électroniques', ->() { notifier })
@@ -67,30 +72,36 @@ module JacintheManagement
         @layout.add_stretch
       end
 
+      # slot: notifier
       def notifier
         require 'jacman/notifications'
         require_relative 'notifier_central_widget'
         parent.central_widget = NotifierCentralWidget.new
       end
 
+      # slot: freesubs
+      # @param [Fixnum] year reference year
       def freesubs(year)
         require 'jacman/freesubs'
         require_relative 'freesubs_central_widget'
         parent.central_widget = FreesubsCentralWidget.new(year)
       end
 
+      # slot: collective manager
       def collective_manager
         require 'jacman/coll'
         require_relative 'collective_manager_central_widget'
         parent.central_widget = CollectiveManagerCentralWidget.new
       end
 
+      # slot: collective exploitation
       def collective_exploitation
         require 'jacman/coll'
         require_relative 'collective_exploitation_central_widget'
         parent.central_widget = CollectiveExploitationCentralWidget.new
       end
 
+      # slot: SQL files manager
       def sql_files
         require_relative 'sql_manager_central_widget'
         parent.central_widget = SqlManagerCentralWidget.new
