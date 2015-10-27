@@ -8,9 +8,11 @@
 
 module JacintheManagement
   module GuiQt
-    TOOLS_VERSION = '2.5.2'
+    TOOLS_VERSION = '2.5.3'
     COPYRIGHT = "\u00A9 Michel Demazure"
 
+    # @param [Array<String>] specific extra lines to include
+    # @return [Array<String>] full versions text for GUI
     def self.tools_versions(specific)
       ['Versions :',
        "   jacman-qtbase : #{JacintheManagement::GuiQt::BASE_VERSION}",

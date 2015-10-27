@@ -7,6 +7,7 @@
 # (c) Michel Demazure <michel@demazure.com>
 module JacintheManagement
   module GuiQt
+    # Specific tool for adding a config button
     module ConfigButton
       # add a button in an added horizontal layout box
       # @return [Qt::PushButton] added button

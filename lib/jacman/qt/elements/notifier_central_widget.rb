@@ -179,7 +179,8 @@ module JacintheManagement
 
       # ask the SQL base
       def update_classification
-        @pending_notifications = Notifications::Base.build_classified_notifications
+        Notifications::Base.build_classified_notifications
+        @pending_notifications =  Notifications::Base.filtered_classified_notifications
       end
 
       # redraw the selection_area
