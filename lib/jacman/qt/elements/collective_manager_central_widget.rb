@@ -65,7 +65,7 @@ module JacintheManagement
       # load all collectives from the database
       def load_all_collectives
         @collectives = Coll::Collective.extract_all
-        @collective_names = @collectives.map(&:name)
+        @collective_names = @collectives.map(&:name_space_year)
         report('-' * 30)
         report 'Abonnements disponibles'
         @collective_names.each { |name| report name }
@@ -121,7 +121,7 @@ module JacintheManagement
         end
       end
 
-      # build the corresponding part
+      # build the corresponding partyuhtg-
       def build_report_area
         @report = Qt::TextEdit.new('')
         add_widget(@report)
@@ -139,6 +139,8 @@ module JacintheManagement
         @load_button = Qt::PushButton.new('Charger un abo. coll.')
         connect(@load_button, SIGNAL_CLICKED) { load_collective }
         box.add_widget(@load_button)
+        # FIXME: disabled
+        @load_button.enabled = false
         update_button = Qt::PushButton.new('Enregistrer l\'abo. coll.')
         connect(update_button, SIGNAL_CLICKED) { update_collective }
         box.add_widget(update_button)
@@ -182,10 +184,10 @@ module JacintheManagement
         return unless selected
         @collective = selected
         fill_in
-        report "abonnement #{@name} chargé"
+        report "abonnement #{selected.name_space_year} chargé"
       end
 
-      # fill the parameters of the selected colective
+      # fill the parameters of the selected collective
       def fill_in
         @name_field.text = @name = @collective.name
         @client_field.text = @provider = @collective.provider
@@ -221,7 +223,7 @@ module JacintheManagement
       # @return [String | nil] valid client_id or nil
       def fetch_client(client)
         return if client == @provider
-        if Coll.fetch_client(client)
+        if Coll.fetch_client("'#{client}'")
           @provider = client
           report("Client #{@provider} identifié")
           client
@@ -263,7 +265,7 @@ module JacintheManagement
         built = build_collective
         return unless built
         @collective = built
-        if @collective_names.include?(@name)
+        if @collective_names.include?(built.name_space_year)
           error "Un abonnement de nom #{@name} existe"
           return
         end

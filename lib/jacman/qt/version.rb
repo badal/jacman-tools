@@ -8,7 +8,7 @@
 
 module JacintheManagement
   module GuiQt
-    TOOLS_VERSION = '2.5.3'
+    TOOLS_VERSION = '2.6.0'
     COPYRIGHT = "\u00A9 Michel Demazure"
 
     # @param [Array<String>] specific extra lines to include

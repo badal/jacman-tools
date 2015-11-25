@@ -119,11 +119,11 @@ module JacintheManagement
 
       # add area
       def add_config_area
-       button = add_config_button
-       connect(button, SIGNAL_CLICKED) do
-         new_central_widget = FreesubsCentralWidget.new(@year, !@mode)
-         parent.central_widget = new_central_widget
-       end
+        button = add_config_button
+        connect(button, SIGNAL_CLICKED) do
+          new_central_widget = FreesubsCentralWidget.new(@year, !@mode)
+          parent.central_widget = new_central_widget
+        end
       end
 
       # WARNING: overrides the common one, useless in this case

@@ -18,8 +18,8 @@ module JacintheManagement
       VERSION = '0.3.0'
       # "About" specific message
       SPECIFIC = [
-          "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
-          "   notifier: #{VERSION}"
+        "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
+        "   notifier: #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)
@@ -89,7 +89,7 @@ module JacintheManagement
 
       # slot : show missed notifiaction report
       def show_report
-         Notifications::Registry.show_missed_notifications
+        Notifications::Registry.show_missed_notifications
       end
 
       # show th report
@@ -129,7 +129,7 @@ module JacintheManagement
       # build the selection area
       # FLOG: 27.2
       def build_selection_area
-        @pending_notifications = Notifications::Base.filtered_classified_notifications
+        update_classification
         @check_buttons = []
         @numbers = []
         @pending_notifications.each_pair.with_index do |(key, _), idx|
@@ -180,7 +180,7 @@ module JacintheManagement
       # ask the SQL base
       def update_classification
         Notifications::Base.build_classified_notifications
-        @pending_notifications =  Notifications::Base.filtered_classified_notifications
+        @pending_notifications = Notifications::Base.filtered_classified_notifications
       end
 
       # redraw the selection_area
