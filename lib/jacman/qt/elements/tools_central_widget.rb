@@ -64,11 +64,11 @@ module JacintheManagement
       def build_layout
         year = Time.now.year
         add_call('Notification des abonnements électroniques', ->() { notifier })
-        add_call("Extension des abonnements gratuits de l'année #{year - 1}", ->() { freesubs(year - 1) })
-        add_call("Extension des abonnements gratuits de l'année #{year}", ->() { freesubs(year) })
+        add_call("Extension des abonnements gratuits et d'échange de l'année #{year - 1}", ->() { freesubs(year - 1) })
+        add_call("Extension des abonnements gratuits et d'échange de l'année #{year}", ->() { freesubs(year) })
         add_call('Création d\'un abonnement collectif', ->() { collective_manager })
         add_call('Exploitation des abonnements collectifs', ->() { collective_exploitation })
-        add_call('Fichiers de requête', ->() { sql_files })
+        add_call('(Pour développeur) Fichiers de requête', ->() { sql_files })
         @layout.add_stretch
       end
 

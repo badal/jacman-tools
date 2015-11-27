@@ -46,7 +46,7 @@ module JacintheManagement
 
       # @return [String] name of manager specialty
       def subtitle
-        'Management des abonnements gratuits et d\'échange'
+        'Extension des abonnements gratuits et d\'échange'
       end
 
       # @return [Array<String>] about message
@@ -60,6 +60,7 @@ module JacintheManagement
         @check_buttons = []
         @ins = []
         fetch_updated_sizes
+        add_widget(Qt::Label.new("<b>#{subtitle}</b>"))
 
         @number = Qt::Label.new
         add_widget(@number)
@@ -100,9 +101,10 @@ module JacintheManagement
           add_layout(box)
           @sel = Qt::Label.new(extension_text(@extensible_size))
           box.add_widget(@sel)
-          button = Qt::PushButton.new("Les étendre  à l'année #{@year + 1}")
-          box.add_widget(button)
-          connect(button, SIGNAL_CLICKED) { confirm }
+          @extend_button = Qt::PushButton.new("Les étendre  à l'année #{@year + 1}")
+          box.add_widget(@extend_button)
+          connect(@extend_button, SIGNAL_CLICKED) { confirm }
+          @extend_button.enabled = (@extensible_size > 0)
         end
       end
 
@@ -178,6 +180,7 @@ module JacintheManagement
           @ins[idx].text = format(FMT, selected_size)
         end
         @sel.text = extension_text(total_size)
+        @extend_button.enabled = (total_size > 0)
       end
 
       # @param [Integer] size total number of selected Abos
@@ -213,6 +216,7 @@ module JacintheManagement
       # slot: open the confirm dialog and extend
       def confirm
         acronyms, size = update
+        return if size == 0
         text = "  Etendre #{size} abonnements. Confirmez"
         do_extend(acronyms) if GuiQt.confirm_dialog(text)
       end
