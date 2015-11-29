@@ -36,7 +36,7 @@ module JacintheManagement
 
       # @return [String] name of manager specialty
       def subtitle
-        'Management des abonnements collectifs'
+        'Création des abonnements collectifs'
       end
 
       # @return [Array<String>] about message
@@ -74,7 +74,6 @@ module JacintheManagement
 
       # build the corresponding part
       def build_name_line
-        add_widget(Qt::Label.new("<b>L'abonnement</b>"))
         box = Qt::HBoxLayout.new
         add_layout(box)
         box.add_widget(Qt::Label.new('Nom :'))
