@@ -84,6 +84,9 @@ module JacintheManagement
           @show_button.enabled = false
           connect(@show_button, SIGNAL_CLICKED) { show_report }
           box.add_stretch
+          button = Qt::PushButton.new('Modèles')
+          box.add_widget(button)
+          connect(button, SIGNAL_CLICKED) { open_model_directory}
         end
       end
 
@@ -211,6 +214,11 @@ module JacintheManagement
         @notify_button.enabled = (@selected_size > 0)
         number = Notifications::Base.notifications_number
         @number.text = "<b>Notification à faire pour #{number} abonnement(s)</b>"
+      end
+
+      # slot
+      def open_model_directory
+        Utils.open_file(Core::MODEL_DIR)
       end
 
       # FIXME: add help
