@@ -23,7 +23,6 @@ module JacintheManagement
 
       SIGNAL_EDITING_FINISHED = SIGNAL('editingFinished()')
       SIGNAL_CLICKED = SIGNAL(:clicked)
-      HELP_FILE = File.join(File.dirname(__FILE__), '../help_files/collective_help.pdf')
 
       # @return [[Integer] * 4] geometry of mother window
       def geometry
@@ -161,11 +160,15 @@ module JacintheManagement
       def update_values
       end
 
+      # HTML help file
+      HELP_FILE = File.expand_path('manager.html/#coll', Core::HELP_DIR)
+
       # Slot: open the help file
-      def help
-        url = Qt::Url.new("file:///#{HELP_FILE}")
-        Qt::DesktopServices.openUrl(url)
-      end
+       def help
+         url = Qt::Url.new("file:///#{HELP_FILE}")
+         p url
+         Qt::DesktopServices.openUrl(url)
+       end
 
       ## Controller methods
 

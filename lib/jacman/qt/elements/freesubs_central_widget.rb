@@ -19,8 +19,8 @@ module JacintheManagement
       VERSION = '0.1.0'
       # "About" specific message
       SPECIFIC = [
-        "   jacman-freesubs : #{JacintheManagement::Freesubs::VERSION}",
-        "   free subscriptions manager : #{VERSION}"
+          "   jacman-extender : #{JacintheManagement::Extender::VERSION}",
+          "   free subscriptions manager : #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)
@@ -29,9 +29,35 @@ module JacintheManagement
       SIGNAL_CLICKED = SIGNAL(:clicked)
       HELP_FILE = File.join(File.dirname(__FILE__), '../help_files/freesubs_help.pdf')
 
-      def initialize(year = Time.now.year, mode = false)
+      # Explanation about state
+      #  0, 1 : nothing
+      #  2 gratuits, simulé
+      #  3 gratuits, réel
+      #  4 échange, simulé
+      #  5 échange, réel
+      #  6 tout, simulé
+      # 7 tout, réel
+      # FIXME: txo hacks
+      # FIXME : change subtitle
+
+      def extender_from_state
+        mode = @state.odd?
+        case @state
+        when 0, 1
+        when 2, 3
+          Extender::Builder.free(@year, mode)
+        when 4, 5
+          Extender::Builder.exchange(@year, mode)
+        when 6, 7
+          Extender::Builder.all(@year, mode)
+        end
+
+      end
+
+      def initialize(year = Time.now.year - 1, state = 6)
         @year = year.to_i
-        @mode = mode
+        @state = state
+        @extender = extender_from_state
         super()
       end
 
@@ -46,7 +72,20 @@ module JacintheManagement
 
       # @return [String] name of manager specialty
       def subtitle
-        'Extension des abonnements gratuits et d\'échange'
+        case @state
+        when 2
+          'Extension des abonnements gratuits, mode simulé'
+        when 3
+          'Extension des abonnements gratuits, mode réel'
+        when 4
+          'Extension des abonnements d\'échange, mode simulé'
+        when 5
+          'Extension des abonnements d\'échange, mode réel'
+        when 6
+          'Extension des abonnements gratuits et d\'échange, mode simulé'
+        when 7
+          'Extension des abonnements gratuits et d\'échange, mode réel'
+        end
       end
 
       # @return [Array<String>] about message
@@ -56,7 +95,6 @@ module JacintheManagement
 
       # build the layout
       def build_layout
-        @extender = Freesubs::Extender.new(@year, @mode)
         @check_buttons = []
         @ins = []
         fetch_updated_sizes
@@ -112,7 +150,7 @@ module JacintheManagement
       def add_report_area
         Qt::HBoxLayout.new do |box|
           add_layout(box)
-          box.add_widget(Qt::Label.new("<b>Mode #{@mode ? 'réel' : 'simulé'}</b>"))
+          box.add_widget(Qt::Label.new("<b>Mode #{@state.odd? ? 'réel' : 'simulé'}</b>"))
           @report = Qt::Label.new
           box.add_widget(@report)
           box.addStretch
@@ -121,11 +159,36 @@ module JacintheManagement
 
       # add area
       def add_config_area
+        Qt::HBoxLayout.new do |box|
+          add_layout(box)
+          @mode_button = Qt::CheckBox.new("Mode réel")
+          box.add_widget(@mode_button)
+          @free_button = Qt::CheckBox.new("Gratuits")
+          box.add_widget(@free_button)
+          @free_button.set_check_state(Qt::Checked)
+          @exchange_button = Qt::CheckBox.new("Echanges")
+          box.add_widget(@exchange_button)
+          @exchange_button.set_check_state(Qt::Checked)
+          [@mode_button, @free_button, @exchange_button].each do |button|
+            connect(button, SIGNAL_CLICKED) { state_changed }
+          end
+        end
+
         button = add_config_button
         connect(button, SIGNAL_CLICKED) do
           new_central_widget = FreesubsCentralWidget.new(@year, !@mode)
           parent.central_widget = new_central_widget
         end
+      end
+
+      def state_changed
+        @state = 0
+        @state += 1 if @mode_button.is_checked
+        @state +=2 if @free_button.is_checked
+        @state +=4 if @exchange_button.is_checked
+        new_central_widget = FreesubsCentralWidget.new(@year, @state)
+        parent.central_widget = new_central_widget
+
       end
 
       # WARNING: overrides the common one, useless in this case
