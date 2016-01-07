@@ -37,13 +37,11 @@ module JacintheManagement
       #  5 échange, réel
       #  6 tout, simulé
       # 7 tout, réel
-      # FIXME: txo hacks
-      # FIXME : change subtitle
-
       def extender_from_state
         mode = @state.odd?
         case @state
         when 0, 1
+          nil
         when 2, 3
           Extender::Builder.free(@year, mode)
         when 4, 5
@@ -73,6 +71,8 @@ module JacintheManagement
       # @return [String] name of manager specialty
       def subtitle
         case @state
+        when 0,1
+          'Aucune sélection'
         when 2
           'Extension des abonnements gratuits, mode simulé'
         when 3
@@ -95,15 +95,17 @@ module JacintheManagement
 
       # build the layout
       def build_layout
+        add_widget(Qt::Label.new("<b>#{subtitle}</b>"))
+        add_config_area
+        return unless @extender
         @check_buttons = []
         @ins = []
         fetch_updated_sizes
-        add_widget(Qt::Label.new("<b>#{subtitle}</b>"))
 
         @number = Qt::Label.new
         add_widget(@number)
         @number.text = caption_text(@extensible_size)
-        add_config_area
+
         add_extender_area
         add_command_area
         add_report_area
@@ -163,21 +165,16 @@ module JacintheManagement
           add_layout(box)
           @mode_button = Qt::CheckBox.new("Mode réel")
           box.add_widget(@mode_button)
+          @mode_button.set_checked(@state.odd?)
           @free_button = Qt::CheckBox.new("Gratuits")
           box.add_widget(@free_button)
-          @free_button.set_check_state(Qt::Checked)
+          @free_button.set_checked(@state & 2 == 2)
           @exchange_button = Qt::CheckBox.new("Echanges")
           box.add_widget(@exchange_button)
-          @exchange_button.set_check_state(Qt::Checked)
+          @exchange_button.set_checked(@state >= 4)
           [@mode_button, @free_button, @exchange_button].each do |button|
             connect(button, SIGNAL_CLICKED) { state_changed }
           end
-        end
-
-        button = add_config_button
-        connect(button, SIGNAL_CLICKED) do
-          new_central_widget = FreesubsCentralWidget.new(@year, !@mode)
-          parent.central_widget = new_central_widget
         end
       end
 

@@ -82,7 +82,7 @@ module JacintheManagement
       # slot: freesubs
       # @param [Fixnum] year reference year
       def freesubs(year)
-        require 'jacman/freesubs'
+        require 'jacman/extender'
         require_relative 'freesubs_central_widget'
         parent.central_widget = FreesubsCentralWidget.new(year)
       end
