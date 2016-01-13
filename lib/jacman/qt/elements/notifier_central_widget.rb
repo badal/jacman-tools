@@ -86,7 +86,7 @@ module JacintheManagement
           box.add_stretch
           button = Qt::PushButton.new('Modèles')
           box.add_widget(button)
-          connect(button, SIGNAL_CLICKED) { open_model_directory}
+          connect(button, SIGNAL_CLICKED) { open_model_directory }
         end
       end
 
@@ -130,7 +130,7 @@ module JacintheManagement
       end
 
       # build the selection area
-      # FLOG: 27.2
+      # FLOG: 26.8
       def build_selection_area
         update_classification
         @check_buttons = []
