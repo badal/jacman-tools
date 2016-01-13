@@ -51,7 +51,7 @@ module JacintheManagement
         end
       end
 
-      def initialize(year = Time.now.year, state = 6)
+      def initialize(year = Time.now.year - 1, state = 6)
         @year = year.to_i
         @state = state
         @extender = extender_from_state
@@ -114,21 +114,23 @@ module JacintheManagement
       end
 
       # add area
-      # FLOG: 29.5
-      def add_extender_area
+       def add_extender_area
         @extender.all_acronyms.zip(@extender.names).each_with_index do |(acro, name), idx|
           line = Qt::HBoxLayout.new
           add_layout(line)
-          @ins[idx] = Qt::Label.new(format(FMT, @extensible_sizes[idx]))
-          line.add_widget(@ins[idx])
-          @check_buttons[idx] = Qt::CheckBox.new
-          connect(@check_buttons[idx], SIGNAL_CLICKED) { update_window }
-          line.add_widget(@ins[idx])
-          line.add_widget(@check_buttons[idx])
+          add_variable_elements(line, idx)
           line.add_widget(Qt::Label.new("<b>#{acro}</b>"))
           line.add_widget(Qt::Label.new(name))
           line.addStretch
         end
+      end
+
+      def add_variable_elements(line, idx)
+        @ins[idx] = Qt::Label.new(format(FMT, @extensible_sizes[idx]))
+        @check_buttons[idx] = Qt::CheckBox.new
+        connect(@check_buttons[idx], SIGNAL_CLICKED) { update_window }
+        line.add_widget(@ins[idx])
+        line.add_widget(@check_buttons[idx])
       end
 
       # add area
@@ -163,7 +165,7 @@ module JacintheManagement
         @free_button = Qt::CheckBox.new('Gratuits')
         @exchange_button = Qt::CheckBox.new('Echanges')
 
-        init_button_check_states
+        init_button_checked_states
 
         [@mode_button, @free_button, @exchange_button].each do |button|
           box.add_widget(button)
@@ -171,7 +173,7 @@ module JacintheManagement
         end
       end
 
-      def init_button_check_states
+      def init_button_checked_states
         @mode_button.set_checked(@state.odd?)
         @free_button.set_checked(@state & 2 == 2)
         @exchange_button.set_checked(@state >= 4)
