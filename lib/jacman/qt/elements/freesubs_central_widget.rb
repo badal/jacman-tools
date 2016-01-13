@@ -119,14 +119,12 @@ module JacintheManagement
         @extender.all_acronyms.zip(@extender.names).each_with_index do |(acro, name), idx|
           line = Qt::HBoxLayout.new
           add_layout(line)
-          number = Qt::Label.new(format(FMT, @extensible_sizes[idx]))
-          @ins[idx] = number
-          line.add_widget(number)
-          Qt::CheckBox.new do |button|
-            @check_buttons[idx] = button
-            connect(button, SIGNAL_CLICKED) { update_window }
-            line.add_widget(button)
-          end
+          @ins[idx] = Qt::Label.new(format(FMT, @extensible_sizes[idx]))
+          line.add_widget(@ins[idx])
+          @check_buttons[idx] = Qt::CheckBox.new
+          connect(@check_buttons[idx], SIGNAL_CLICKED) { update_window }
+          line.add_widget(@ins[idx])
+          line.add_widget(@check_buttons[idx])
           line.add_widget(Qt::Label.new("<b>#{acro}</b>"))
           line.add_widget(Qt::Label.new(name))
           line.addStretch
