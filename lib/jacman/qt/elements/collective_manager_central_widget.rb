@@ -164,11 +164,11 @@ module JacintheManagement
       HELP_FILE = File.expand_path('manager.html/#coll', Core::HELP_DIR)
 
       # Slot: open the help file
-       def help
-         url = Qt::Url.new("file:///#{HELP_FILE}")
-         p url
-         Qt::DesktopServices.openUrl(url)
-       end
+      def help
+        url = Qt::Url.new("file:///#{HELP_FILE}")
+        p url
+        Qt::DesktopServices.openUrl(url)
+      end
 
       ## Controller methods
 

@@ -49,10 +49,9 @@ module JacintheManagement
         when 6, 7
           Extender::Builder.all(@year, mode)
         end
-
       end
 
-      def initialize(year = Time.now.year - 1, state = 6)
+      def initialize(year = Time.now.year, state = 6)
         @year = year.to_i
         @state = state
         @extender = extender_from_state
@@ -71,7 +70,7 @@ module JacintheManagement
       # @return [String] name of manager specialty
       def subtitle
         case @state
-        when 0,1
+        when 0, 1
           'Aucune sélection'
         when 2
           'Extension des abonnements gratuits, mode simulé'
@@ -118,20 +117,19 @@ module JacintheManagement
       # FLOG: 29.5
       def add_extender_area
         @extender.all_acronyms.zip(@extender.names).each_with_index do |(acro, name), idx|
-          Qt::HBoxLayout.new do |line|
-            add_layout(line)
-            number = Qt::Label.new(format(FMT, @extensible_sizes[idx]))
-            @ins[idx] = number
-            line.add_widget(number)
-            Qt::CheckBox.new do |button|
-              @check_buttons[idx] = button
-              connect(button, SIGNAL_CLICKED) { update_window }
-              line.add_widget(button)
-            end
-            line.add_widget(Qt::Label.new("<b>#{acro}</b>"))
-            line.add_widget(Qt::Label.new(name))
-            line.addStretch
+          line = Qt::HBoxLayout.new
+          add_layout(line)
+          number = Qt::Label.new(format(FMT, @extensible_sizes[idx]))
+          @ins[idx] = number
+          line.add_widget(number)
+          Qt::CheckBox.new do |button|
+            @check_buttons[idx] = button
+            connect(button, SIGNAL_CLICKED) { update_window }
+            line.add_widget(button)
           end
+          line.add_widget(Qt::Label.new("<b>#{acro}</b>"))
+          line.add_widget(Qt::Label.new(name))
+          line.addStretch
         end
       end
 
@@ -161,31 +159,33 @@ module JacintheManagement
 
       # add area
       def add_config_area
-        Qt::HBoxLayout.new do |box|
-          add_layout(box)
-          @mode_button = Qt::CheckBox.new("Mode réel")
-          box.add_widget(@mode_button)
-          @mode_button.set_checked(@state.odd?)
-          @free_button = Qt::CheckBox.new("Gratuits")
-          box.add_widget(@free_button)
-          @free_button.set_checked(@state & 2 == 2)
-          @exchange_button = Qt::CheckBox.new("Echanges")
-          box.add_widget(@exchange_button)
-          @exchange_button.set_checked(@state >= 4)
-          [@mode_button, @free_button, @exchange_button].each do |button|
-            connect(button, SIGNAL_CLICKED) { state_changed }
-          end
+        box = Qt::HBoxLayout.new
+        add_layout(box)
+        @mode_button = Qt::CheckBox.new('Mode réel')
+        @free_button = Qt::CheckBox.new('Gratuits')
+        @exchange_button = Qt::CheckBox.new('Echanges')
+
+        init_button_check_states
+
+        [@mode_button, @free_button, @exchange_button].each do |button|
+          box.add_widget(button)
+          connect(button, SIGNAL_CLICKED) { state_changed }
         end
+      end
+
+      def init_button_check_states
+        @mode_button.set_checked(@state.odd?)
+        @free_button.set_checked(@state & 2 == 2)
+        @exchange_button.set_checked(@state >= 4)
       end
 
       def state_changed
         @state = 0
         @state += 1 if @mode_button.is_checked
-        @state +=2 if @free_button.is_checked
-        @state +=4 if @exchange_button.is_checked
+        @state += 2 if @free_button.is_checked
+        @state += 4 if @exchange_button.is_checked
         new_central_widget = FreesubsCentralWidget.new(@year, @state)
         parent.central_widget = new_central_widget
-
       end
 
       # WARNING: overrides the common one, useless in this case
