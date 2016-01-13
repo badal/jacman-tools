@@ -18,8 +18,8 @@ module JacintheManagement
       VERSION = '0.3.0'
       # "About" specific message
       SPECIFIC = [
-        "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
-        "   notifier: #{VERSION}"
+          "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
+          "   notifier: #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)
@@ -130,25 +130,25 @@ module JacintheManagement
       end
 
       # build the selection area
-      # FLOG: 26.8
       def build_selection_area
         update_classification
         @check_buttons = []
         @numbers = []
         @pending_notifications.each_pair.with_index do |(key, _), idx|
-          Qt::HBoxLayout.new do |line|
-            add_layout(line)
-            @numbers[idx] = Qt::Label.new
-            line.add_widget(@numbers[idx])
-            Qt::CheckBox.new do |button|
-              @check_buttons[idx] = button
-              connect(button, SIGNAL(:clicked)) { update_selection }
-              line.add_widget(button)
-            end
-            line.add_widget(Qt::Label.new(format_key(key)))
-            line.addStretch
-          end
+          line = Qt::HBoxLayout.new
+          add_layout(line)
+          add_variable_elements(line, idx)
+          line.add_widget(Qt::Label.new(format_key(key)))
+          line.addStretch
         end
+      end
+
+      def add_variable_elements(line, idx)
+        @numbers[idx] = Qt::Label.new
+        @check_buttons[idx] = Qt::CheckBox.new
+        connect(@check_buttons[idx], SIGNAL(:clicked)) { update_selection }
+        line.add_widget(@numbers[idx])
+        line.add_widget(@check_buttons[idx])
       end
 
       # WARNING: overrides the common one, useless in this case
