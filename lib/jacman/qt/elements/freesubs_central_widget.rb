@@ -29,32 +29,10 @@ module JacintheManagement
       SIGNAL_CLICKED = SIGNAL(:clicked)
       HELP_FILE = File.join(File.dirname(__FILE__), '../help_files/freesubs_help.pdf')
 
-      # Explanation about state
-      #  0, 1 : nothing
-      #  2 gratuits, simulé
-      #  3 gratuits, réel
-      #  4 échange, simulé
-      #  5 échange, réel
-      #  6 tout, simulé
-      # 7 tout, réel
-      def extender_from_state
-        mode = @state.odd?
-        case @state
-        when 0, 1
-          nil
-        when 2, 3
-          Extender::Builder.free(@year, mode)
-        when 4, 5
-          Extender::Builder.exchange(@year, mode)
-        when 6, 7
-          Extender::Builder.all(@year, mode)
-        end
-      end
-
       def initialize(year = Time.now.year - 1, state = 6)
         @year = year.to_i
         @state = state
-        @extender = extender_from_state
+        @extender = Extender::Builder.from_state(@year, @state)
         super()
       end
 
@@ -69,22 +47,7 @@ module JacintheManagement
 
       # @return [String] name of manager specialty
       def subtitle
-        case @state
-        when 0, 1
-          'Aucune sélection'
-        when 2
-          'Extension des abonnements gratuits, mode simulé'
-        when 3
-          'Extension des abonnements gratuits, mode réel'
-        when 4
-          'Extension des abonnements d\'échange, mode simulé'
-        when 5
-          'Extension des abonnements d\'échange, mode réel'
-        when 6
-          'Extension des abonnements gratuits et d\'échange, mode simulé'
-        when 7
-          'Extension des abonnements gratuits et d\'échange, mode réel'
-        end
+        Extender::Builder.subtitle(@state)
       end
 
       # @return [Array<String>] about message
