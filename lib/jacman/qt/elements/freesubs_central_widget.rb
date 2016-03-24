@@ -158,7 +158,6 @@ module JacintheManagement
       # Slot: open the help file
       def help
         url = Qt::Url.new("file:///#{HELP_FILE}")
-        p url
         Qt::DesktopServices.openUrl(url)
       end
 
