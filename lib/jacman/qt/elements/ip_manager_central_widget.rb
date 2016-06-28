@@ -131,19 +131,31 @@ module JacintheManagement
 
       def start_edit(number)
         selected = @result[number]
-        before = selected.before
-        line = selected.line
-        after = selected.after
-        build_edit_with(before, line, after)
+        fill_edit_with(selected.before, selected.line, selected.after)
       end
 
       # TODO: create class
-      def build_edit_with(before, line, after)
+      def fill_edit_with(before, line, after)
+         document = Qt::TextDocument.new
+         @edit.setDocument(document)
+         cursor = Qt::TextCursor.new(document)
          @edit.insert_plain_text(before.join("\n"))
+         cur_beg = cursor.position
          @edit.set_font_weight(Qt::Font::Bold)
-         @edit.insert_plain_text("\n\n#{line}\n\n")
+         @edit.insert_plain_text("\n#{line}\n")
+         cur_end = cursor.position
          @edit.set_font_weight(Qt::Font::Normal)
          @edit.insert_plain_text(after.join("\n"))
+         cursor.set_position(cur_beg, Qt::TextCursor::MoveAnchor)
+         cursor.set_position(cur_end, Qt::TextCursor::KeepAnchor)
+         fmt = Qt::TextCharFormat.new
+         color = '#0FF'
+         brush = Qt::Brush.new(Qt::Color.new(color), Qt::SolidPattern)
+         fmt.set_background(brush)
+         cursor.setCharFormat(fmt)
+         cursor.set_position(cur_end)
+         @edit.setTextCursor(cursor)
+         @edit.ensureCursorVisible
       end
 
       def presentation(result)
