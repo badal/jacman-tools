@@ -89,7 +89,6 @@ module JacintheManagement
       end
 
       def ask_find(str)
-        p str
         searched = Core::Electronic::IPRange.new(str)
         if searched.valid?
           do_search(str)
@@ -100,8 +99,8 @@ module JacintheManagement
 
       def do_search(str)
         result = @table.find(str)
-
-        report presentation(result)
+        report ('---')
+        report str + ' : ' + presentation(result)
       end
 
       def presentation(result)
