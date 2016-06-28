@@ -22,6 +22,7 @@ module JacintheManagement
       ABOUT = GuiQt.tools_versions(SPECIFIC)
 
       SIGNAL_EDITING_FINISHED = SIGNAL('editingFinished()')
+      SIGNAL_COMBO_ACTIVATED = SIGNAL('activated(const QString&)')
       SIGNAL_CLICKED = SIGNAL(:clicked)
 
       # @return [[Integer] * 4] geometry of mother window
@@ -47,6 +48,8 @@ module JacintheManagement
       def build_layout
 
         build_query_line
+        build_edit_choice_line
+        build_edit_area
         build_report_area
         @layout.add_stretch
 
@@ -77,11 +80,28 @@ module JacintheManagement
         connect(@query, SIGNAL_EDITING_FINISHED) { ask_find(@query.text) }
       end
 
+      def build_edit_choice_line
+        box = Qt::HBoxLayout.new
+        add_layout(box)
+        box.add_widget(Qt::Label.new('Editer :'))
+        @edit_choice = Qt::ComboBox.new
+        box.add_widget(@edit_choice)
+        connect(@edit_choice, SIGNAL_COMBO_ACTIVATED) { start_edit(@edit_choice.current_index) }
+
+      end
+
       # build the corresponding part
       def build_report_area
         @report = Qt::TextEdit.new('')
         add_widget(@report)
         @report.read_only = true
+      end
+
+      def build_edit_area
+        box = Qt::HBoxLayout.new
+        add_layout(box)
+        @edit = Qt::TextEdit.new
+        box.add_widget(@edit)
       end
 
       def load_ip_table
@@ -98,9 +118,32 @@ module JacintheManagement
       end
 
       def do_search(str)
-        result = @table.find(str)
-        report ('---')
-        report str + ' : ' + presentation(result)
+        @result = @table.find(str)
+        report "----\n#{str} : " + presentation(@result)
+        @edit_choice.count.times{ @edit_choice.remove_item(0)}
+        build_edit_choice unless @result.empty?
+      end
+
+      def build_edit_choice
+        @edit_choice.add_items(@result.map(&:report))
+        @edit_choice.set_size_adjust_policy(0)
+      end
+
+      def start_edit(number)
+        selected = @result[number]
+        before = selected.before
+        line = selected.line
+        after = selected.after
+        build_edit_with(before, line, after)
+      end
+
+      # TODO: create class
+      def build_edit_with(before, line, after)
+         @edit.insert_plain_text(before.join("\n"))
+         @edit.set_font_weight(Qt::Font::Bold)
+         @edit.insert_plain_text("\n\n#{line}\n\n")
+         @edit.set_font_weight(Qt::Font::Normal)
+         @edit.insert_plain_text(after.join("\n"))
       end
 
       def presentation(result)
