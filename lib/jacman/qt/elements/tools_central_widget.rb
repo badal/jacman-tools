@@ -68,6 +68,7 @@ module JacintheManagement
         add_call("Extension des abonnements gratuits et d'échange de l'année #{year}", ->() { freesubs(year) })
         add_call('Création d\'un abonnement collectif', ->() { collective_manager })
         add_call('Exploitation des abonnements collectifs', ->() { collective_exploitation })
+        add_call('Recherche des tiers par facture', ->() { billing_manager } )
         add_call('(Pour développeur) Fichiers de requête', ->() { sql_files })
         @layout.add_stretch
       end
@@ -101,6 +102,12 @@ module JacintheManagement
         parent.central_widget = CollectiveExploitationCentralWidget.new
       end
 
+
+      # slot: billing_search
+      def billing_manager
+        require_relative 'billing_central_widget'
+        parent.central_widget = BillingCentralWidget.new
+      end
       # slot: SQL files manager
       def sql_files
         require_relative 'sql_manager_central_widget'

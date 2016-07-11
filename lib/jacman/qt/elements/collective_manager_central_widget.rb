@@ -278,7 +278,7 @@ module JacintheManagement
 
       # @return [String] parameters of built collective
       def built_parameters
-        @collective.report.join("\n")
+        (@tiers.text = nil).join("\n")
       end
     end
   end
