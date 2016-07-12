@@ -9,13 +9,13 @@
 # script methods for Jacinthe Management
 module JacintheManagement
   module GuiQt
-    # Central widget for SQL manager
+    # Central widget for billing searcher manager
     class BillingCentralWidget < CentralWidget
       # version of the Billing_manager
       VERSION = '0.1.0'
       # "About" specific message
       SPECIFIC = [
-          "   billing_manager : #{VERSION}"
+        "   billing_manager : #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)
@@ -63,7 +63,6 @@ module JacintheManagement
         @tiers = Qt::Label.new('--- Tiers ----')
         box.add_widget(@tiers)
         box.add_stretch
-
       end
 
       def build_content_area

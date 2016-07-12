@@ -18,8 +18,8 @@ module JacintheManagement
       VERSION = '0.3.0'
       # "About" specific message
       SPECIFIC = [
-          "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
-          "   notifier: #{VERSION}"
+        "   jacman-notifications : #{JacintheManagement::Notifications::VERSION}",
+        "   notifier: #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)

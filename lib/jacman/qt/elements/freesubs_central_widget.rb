@@ -19,8 +19,8 @@ module JacintheManagement
       VERSION = '0.1.0'
       # "About" specific message
       SPECIFIC = [
-          "   jacman-extender : #{JacintheManagement::Extender::VERSION}",
-          "   free subscriptions manager : #{VERSION}"
+        "   jacman-extender : #{JacintheManagement::Extender::VERSION}",
+        "   free subscriptions manager : #{VERSION}"
       ]
       # "About message"
       ABOUT = GuiQt.tools_versions(SPECIFIC)
@@ -77,7 +77,7 @@ module JacintheManagement
       end
 
       # add area
-       def add_extender_area
+      def add_extender_area
         @extender.all_acronyms.zip(@extender.names).each_with_index do |(acro, name), idx|
           line = Qt::HBoxLayout.new
           add_layout(line)
