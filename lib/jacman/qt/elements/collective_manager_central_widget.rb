@@ -139,9 +139,11 @@ module JacintheManagement
         box.add_widget(@load_button)
         # FIXME: disabled
         @load_button.enabled = false
-        update_button = Qt::PushButton.new('Enregistrer l\'abo. coll.')
-        connect(update_button, SIGNAL_CLICKED) { update_collective }
-        box.add_widget(update_button)
+     
+        @update_button = Qt::PushButton.new('Enregistrer l\'abo. coll.')
+        connect(@update_button, SIGNAL_CLICKED) { update_collective }
+        box.add_widget(@update_button)
+        @update_button.enabled = false
       end
 
       # show an error message
@@ -210,6 +212,7 @@ module JacintheManagement
       def create_collective
         @load_button.enabled = false
         @extracting = false
+        build_collective
       end
 
       # loading action has been selected
@@ -250,6 +253,7 @@ module JacintheManagement
       #
       # @return [Subscriber | nil] collective subscriber built
       def build_collective
+        @built = nil
         return nil unless check(@name, 'nom de l\'abonnement') &&
                           check(@provider, 'client') &&
                           check(@billing, 'facture') &&
@@ -259,26 +263,26 @@ module JacintheManagement
           error 'pas de revues'
           return nil
         end
-        Coll::Collective.new(@name, @provider, @billing, @journal_ids, @year.to_i)
+        @built = Coll::Collective.new(@name, @provider, @billing, @journal_ids, @year.to_i)
+        if @collective_names.include?(@built.name_space_year)
+          error "Un abonnement de nom #{@name} existe pour l'année #{@year}"
+          return
+        else
+          report("Abonnement valide, vous pouvez l'enregistrer")
+          @update_button.enabled = true
+        end
       end
 
       # do update the loaded collective
       def update_collective
-        built = build_collective
-        return unless built
-        @collective = built
-        if @collective_names.include?(built.name_space_year)
-          error "Un abonnement de nom #{@name} existe"
-          return
-        end
         return unless GuiQt.confirm_dialog(built_parameters)
-        puts @collective.insert_in_database
+        @built.insert_in_database
         load_all_collectives
       end
 
       # @return [String] parameters of built collective
       def built_parameters
-        (@tiers.text = nil).join("\n")
+        @built.report.join("\n")
       end
     end
   end
